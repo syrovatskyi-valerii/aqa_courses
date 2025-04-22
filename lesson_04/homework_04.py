@@ -88,12 +88,12 @@ for sentence in adwentures_of_tom_sawer_sentences:
     if sentence.strip().startswith(searching_phrase):
         print(f'Це речення починається на фразу "{searching_phrase}')
     else:
-        print(f'Це речення не починається на фразу{searching_phrase}')
+        print(f'Це речення не починається на фразу {searching_phrase}')
 
 # task 10
 """ Виведіть кількість слів останнього речення з adwentures_of_tom_sawer_sentences.
 """
 # Рішення:
-last_sentence = adwentures_of_tom_sawer_sentences[-1]
+last_sentence = adwentures_of_tom_sawer_sentences[-2]
 words_count_in_last_sentence = len(last_sentence.split())
 print(f'В останньому реченні {words_count_in_last_sentence} слів')
