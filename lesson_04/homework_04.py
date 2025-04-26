@@ -69,7 +69,7 @@ print(f'Слово Tom зустрічається вдруге на {second_inde
 Збережіть результат у змінній adwentures_of_tom_sawer_sentences
 """
 # Рішення:
-adwentures_of_tom_sawer_sentences = (adwentures_of_tom_sawer.split('.'))
+adwentures_of_tom_sawer_sentences = (adwentures_of_tom_sawer.split('. '))
 print(adwentures_of_tom_sawer_sentences)
 
 # task 08
@@ -94,6 +94,6 @@ for sentence in adwentures_of_tom_sawer_sentences:
 """ Виведіть кількість слів останнього речення з adwentures_of_tom_sawer_sentences.
 """
 # Рішення:
-last_sentence = adwentures_of_tom_sawer_sentences[-2]
+last_sentence = adwentures_of_tom_sawer_sentences[-1]
 words_count_in_last_sentence = len(last_sentence.split())
-print(f'В останньому реченні {words_count_in_last_sentence} слів')
+print(f'В останньому реченні {words_count_in_last_sentence} слова')
