@@ -8,3 +8,6 @@ for number in test_list:
     if number % 2 == 0:
         sum_result += number
 print(f'Сума усіх парних чисел у списку дорівнює {sum_result}')
+
+# або
+# sum_result = sum([k for k in test_list if k %2 ==0 ])
