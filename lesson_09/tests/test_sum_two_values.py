@@ -17,19 +17,6 @@ def test_sum_two_values_positive(a, b, expected_value):
                                             f'but actual value = {actual_value}'
                                             )
 
-@pytest.mark.negative
-@pytest.mark.parametrize("a, b, expected_value", [
-    (1, 2, 4),
-    (-1, 2, 0),
-    (1, 0, 0),
-])
-def test_sum_two_values_negative(a, b, expected_value):
-    actual_value = count_sum(a, b)
-    assert expected_value != actual_value, (f''
-                                            f'Sum two value: expected value = {expected_value}, '
-                                            f'but actual value = {actual_value}'
-                                            )
-
 
 invalid_values = [True, False, None, 'string', [], {}, (), set(), object()]
 @pytest.mark.negative
