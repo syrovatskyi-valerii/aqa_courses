@@ -107,3 +107,18 @@ def test_side_a_could_not_be_none(side_a, corner_a):
 def test_corner_a_could_not_be_none(side_a, corner_a):
     with pytest.raises(ValueError, match="Кут \"А\" не може бути None"):
         Diamond(side_a, corner_a)
+
+
+@pytest.mark.negative
+@pytest.mark.parametrize(
+    "side_a, corner_a, expected_corner_b",
+    [
+        (10, 60, None),
+        (10, 60, True),
+        (10, 60, False),
+        (10, 60, '120')
+    ]
+)
+def test_invalid_corner_b(side_a, corner_a, expected_corner_b):
+    d = Diamond(side_a, corner_a)
+    assert d.corner_b != expected_corner_b
