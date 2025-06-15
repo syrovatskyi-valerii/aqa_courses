@@ -14,7 +14,7 @@ class Diamond:
         if key == 'side_a' and value <= 0:
             raise ValueError("Сторона \"А\" повинна бути більшою за 0.")
 
-        # ща можна ось так:
+        # ще можна ось так:
         # if key == 'corner_a' and value is None:
         #     raise ValueError("Кут \"А\" не може бути None")
 
