@@ -1,5 +1,8 @@
 import sqlite3
 
+connection = None
+cursor = None
+
 try:
     connection = sqlite3.connect('test_homework.db')
 
@@ -48,24 +51,27 @@ try:
     connection.commit()
 
     # JOIN-request
-    cursor.execute('''
-    SELECT products.name AS product_name, 
-           products.description, 
-           products.price, 
-           categories.name AS category_name
-    FROM products
-    JOIN categories ON products.category_id = categories.id
-    ''')
+    try:
+        cursor.execute('''
+        SELECT products.name AS product_name, 
+               products.description, 
+               products.price, 
+               categories.name AS category_name
+        FROM products
+        JOIN categories ON products.category_id = categories.id
+        ''')
+        print(cursor.fetchall())
 
-
-    print(cursor.fetchall())
+    except sqlite3.Error as e:
+        print("SQLite error:", e)
 
 
 except Exception as error:
     print("Error while connecting to DB", error)
 
 finally:
-    if connection:
+    if cursor:
         cursor.close()
+    if connection:
         connection.close()
         print("DB connection is closed")
