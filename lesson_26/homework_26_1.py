@@ -46,4 +46,5 @@ def test_verify_frame(driver, frame_selector, input_selector, secret_message, ch
     except TimeoutException:
         raise AssertionError('Alert did not appear after clicking the button')
 
-    driver.switch_to.default_content()
+    finally:
+        driver.switch_to.default_content()
