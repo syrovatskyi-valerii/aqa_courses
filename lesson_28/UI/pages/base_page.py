@@ -1,7 +1,10 @@
+import allure
+import pytest
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException
 from lesson_28.UI.test.custom_wait import WaitSeveralElements
+
 
 
 class BasePage:
@@ -12,31 +15,43 @@ class BasePage:
 
 
     def open_page(self):
-        self._driver.get(self.url)
+
+        with allure.step(f'Open page: "{self.url}"'):
+
+            self._driver.get(self.url)
 
         return self
 
 
     def find(self, locator, timeout=5, message=None):
-        element = WebDriverWait(self._driver, timeout).until(
-            EC.visibility_of_element_located(locator), message=message)
+
+        with allure.step(f'Find element: "{locator}"'):
+
+            element = WebDriverWait(self._driver, timeout).until(
+                EC.visibility_of_element_located(locator), message=message)
 
         return element
 
 
     def click(self, locator, timeout=5, message=None):
-        element = WebDriverWait(self._driver, timeout).until(EC.element_to_be_clickable(locator),
+
+        with allure.step(f'Click on "{locator}"'):
+
+            element = WebDriverWait(self._driver, timeout).until(EC.element_to_be_clickable(locator),
                message=message)
-        element.click()
+            element.click()
 
         return element
 
 
     def fill_in_field(self, locator, text, timeout=5, clear_first=True, message =None):
-        element = self.find(locator, timeout, message=message)
-        if clear_first:
-            element.clear()
-        element.send_keys(text)
+
+        with allure.step(f'Fill in field "{locator}" by text: "{text}"' ):
+
+            element = self.find(locator, timeout, message=message)
+            if clear_first:
+                element.clear()
+            element.send_keys(text)
 
         return element
 
@@ -60,8 +75,11 @@ class BasePage:
 
 
     def wait_several_elements(self, locator, quantity_of_els, timeout=5, message=None):
-        element = WebDriverWait(self._driver, timeout
-                           ).until(WaitSeveralElements(locator=locator, quantity=quantity_of_els),
-                                   message=message)
+
+        with allure.step(f'Wait until "{quantity_of_els}" elements are found by locator "{locator}"'):
+
+            element = WebDriverWait(self._driver, timeout
+                               ).until(WaitSeveralElements(locator=locator, quantity=quantity_of_els),
+                                       message=message)
 
         return element
