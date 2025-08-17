@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        NAME_MARK = "ui_tests"
+        VENV_PATH = "venv"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,25 +15,25 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh '''#!/bin/bash
-                    set -e  # зупинятися при будь-якій помилці
+                    set -e  # stop if errrs exisit
 
                     # -----------------------------
-                    # Оновлення пакетів
+                    # update package
                     # -----------------------------
                     apt-get update
 
                     # -----------------------------
-                    # Встановлюємо Python + venv + pip
+                    # install Python + venv + pip
                     # -----------------------------
                     apt-get install -y python3 python3-dev python3-pip python3.11-venv wget
 
                     # -----------------------------
-                    # Встановлюємо Chromium та драйвер
+                    # install Chromium and driver
                     # -----------------------------
                     apt-get install -y chromium chromium-driver
 
                     # -----------------------------
-                    # Створюємо та активуємо віртуальне оточення
+                    # create venv
                     # -----------------------------
                     rm -rf venv
                     python3 -m venv venv'''
@@ -37,23 +42,34 @@ pipeline {
         stage('Install requirements') {
             steps {
                 sh '''#!/bin/bash
-                    source venv/bin/activate
+                    source ${VENV_PATH}/bin/activate
+                    pip install --upgrade pip
                     pip install -r requirements.txt'''
             }
         }
         stage('Run tests') {
             steps {
                 sh '''#!/bin/bash
-                    source venv/bin/activate
+                    source ${VENV_PATH}/bin/activate
                     pytest -m "${NAME_MARK}" -s -v --alluredir=allure-results'''
             }
         }
-
     }
+
     post {
         always {
+            // generate Allure-report
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+
+            // Send email to valerii.aliens@gmail.com
+            emailext (
+                subject: "Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+                body: """
+                Build #${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}.
+                See details: ${env.BUILD_URL}
+                """,
+                to: "valerii.aliens@gmail.com"
+            )
         }
     }
-
 }
