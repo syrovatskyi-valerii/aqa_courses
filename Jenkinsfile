@@ -45,7 +45,7 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                     source venv/bin/activate
-                    pytest -m ui_tests -s -v --alluredir=allure-results'''
+                    pytest -m "${NAME_MARK}"s -s -v --alluredir=allure-results'''
             }
         }
 
