@@ -1,6 +1,7 @@
 import requests
+from lesson_19.homework_19_2.tests.conftest import BaseAPITest
 
-class GetImage:
+class GetImage(BaseAPITest):
     def __init__(self, base_url):
         self.base_url = base_url
         self.image_endpoint = 'image'
