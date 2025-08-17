@@ -59,10 +59,10 @@ pipeline {
 
                 if (allureSummary) {
                     def json = readJSON text: allureSummary
-                    passed = json.statistic.passed
-                    failed = json.statistic.failed
-                    broken = json.statistic.broken
-                    skipped = json.statistic.skipped
+                        passed = json.statistic.passed
+                        failed = json.statistic.failed
+                        broken = json.statistic.broken
+                        skipped = json.statistic.skipped
                 }
 
                 allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
