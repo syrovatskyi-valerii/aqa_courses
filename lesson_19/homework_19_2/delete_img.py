@@ -1,6 +1,7 @@
 import requests
+from lesson_19.homework_19_2.tests.conftest import BaseAPITest
 
-class DeleteImage:
+class DeleteImage(BaseAPITest):
     def __init__(self, base_url):
         self.base_url = base_url
         self.delete_endpoint = 'delete'
