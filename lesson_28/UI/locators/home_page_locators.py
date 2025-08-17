@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 class HomePageLocators:
 
     # Website header
-    sign_in_button_loc = (By.XPATH, "//button[@class='btn btn-outline-white header_signin']")
+    sign_in_button_loc = (By.XPATH, "//button[@class='btn btn-outline-white header_signi']")
 
     # Log in modal window
     registration_button = (By.XPATH, "//button[@class='btn btn-link' and text()='Registration']")
