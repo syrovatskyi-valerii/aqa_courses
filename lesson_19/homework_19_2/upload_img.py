@@ -1,7 +1,7 @@
 import requests
-from lesson_19.homework_19_2.tests.conftest import BaseAPITest
 
-class UploadImage(BaseAPITest):
+
+class UploadImage:
     def __init__(self, base_url, image_path):
         self.base_url = base_url
         self.image_path = image_path

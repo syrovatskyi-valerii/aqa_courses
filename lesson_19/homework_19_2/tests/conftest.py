@@ -5,10 +5,6 @@ BASE_URL = 'http://127.0.0.1:8080'
 IMAGE = 'example_image.jpg'
 
 
-@pytest.mark.api_tests
-class BaseAPITest:
-    pass
-
 @pytest.fixture(scope='module')
 def upload_image_fixture():
     uploader = UploadImage(base_url=BASE_URL, image_path=IMAGE)
