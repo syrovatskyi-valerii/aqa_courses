@@ -1,6 +1,7 @@
 import pytest
 import allure
 from selenium import webdriver
+from shutil import which
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -23,8 +24,9 @@ def driver():
         options = Options()
         options.add_argument("--headless")
         options.add_argument("--window-size=1920,1080")
-        driver = webdriver.Chrome(options=options,
-                                  service=Service(ChromeDriverManager().install()))
+
+        driver_path = which("chromedriver")
+        driver = webdriver.Chrome(service=Service(driver_path), options=options)
 
         yield driver
 
