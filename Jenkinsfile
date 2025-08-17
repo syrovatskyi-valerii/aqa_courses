@@ -68,7 +68,8 @@ pipeline {
                 Build #${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}.
                 See details: ${env.BUILD_URL}
                 """,
-                to: "valerii.aliens@gmail.com"
+                to: "valerii.aliens@gmail.com",
+                from: "valerii.aliens@gmail.com"
             )
         }
     }
