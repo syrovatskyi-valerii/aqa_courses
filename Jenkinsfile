@@ -57,18 +57,65 @@ pipeline {
     }
 
     post {
-        always {
-            // generate Allure-report
+    always {
+        script {
+            // Зчитування статистики з Allure summary
+            def allureSummary = sh(
+                script: "cat allure-results/widgets/summary.json || true",
+                returnStdout: true
+            ).trim()
+
+            def passed = ""
+            def failed = ""
+            def broken = ""
+            def skipped = ""
+
+            if (allureSummary) {
+                def json = readJSON text: allureSummary
+                passed = json.statistic.passed
+                failed = json.statistic.failed
+                broken = json.statistic.broken
+                skipped = json.statistic.skipped
+            }
+
+            // Генерація Allure report
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
 
-            // Send email to valerii.aliens@gmail.com
-            emailext (
-                subject: "Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
+            // Запакувати Allure report у .zip для скачування
+            sh """
+                rm -f allure-report.zip || true
+                zip -r allure-report.zip allure-report || true
+            """
+
+            // Надсилання email з HTML, статистикою, посиланням і вкладенням
+            emailext(
+                subject: "📌 Build #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
                 body: """
-                Build #${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}.
-                See details: ${env.BUILD_URL}
+                    <h2>🔔 Jenkins Build Notification</h2>
+                    <p><b>Job:</b> ${env.JOB_NAME}</p>
+                    <p><b>Build #:</b> ${env.BUILD_NUMBER}</p>
+                    <p><b>Status:</b> <span style="color:${currentBuild.currentResult == 'SUCCESS' ? 'green' : 'red'}">
+                        ${currentBuild.currentResult}
+                    </span></p>
+                    <hr>
+                    <h3>📊 Test Results (Allure)</h3>
+                    <ul>
+                        <li>✅ Passed: ${passed}</li>
+                        <li>❌ Failed: ${failed}</li>
+                        <li>⚠️ Broken: ${broken}</li>
+                        <li>⏭️ Skipped: ${skipped}</li>
+                    </ul>
+                    <hr>
+                    <p><b>Branch:</b> ${env.GIT_BRANCH}</p>
+                    <p><b>Commit:</b> ${env.GIT_COMMIT}</p>
+                    <p><b>Started by:</b> ${currentBuild.getBuildCauses()[0].userName ?: 'Auto/SCM Trigger'}</p>
+                    <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                    <p><b>Allure Report:</b> <a href="${env.BUILD_URL}allure">Click here to view in browser</a></p>
+                    <p><b>Allure Report File:</b> attached as <i>allure-report.zip</i></p>
                 """,
-                to: "valerii.aliens@gmail.com"
+                mimeType: 'text/html',
+                to: "valerii.aliens@gmail.com",
+                attachmentsPattern: "allure-report.zip"
             )
         }
     }
