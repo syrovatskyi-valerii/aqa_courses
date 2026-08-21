@@ -65,13 +65,13 @@ class BasePage:
                 message=not_found_message or f"Element with locator {locator} not found"
             )
 
-            assert expected_text in element.text, \
+            assert expected_text == element.text, \
                 wrong_text_message or f'Expected text "{expected_text}", but got: "{element.text}"'
 
         except TimeoutException:
             raise AssertionError(not_found_message or 'Timed out waiting for the expected element')
 
-        return self
+        return element
 
 
     def wait_several_elements(self, locator, quantity_of_els, timeout=5, message=None):
